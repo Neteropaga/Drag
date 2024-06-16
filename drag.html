@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>exercicedrag</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        gap: 30px;
+        background: rgba(0, 0, 255, 0.404);
+        padding: 20px;
+      }
+      .container {
+        width: 30vw;
+        background: black;
+        color: white;
+        margin-top: 10px;
+        padding: 20px;
+        position: absolute;
+      }
+      #container2 {
+        right: 34vw;
+      }
+      #container3 {
+        right: 2vw;
+      }
+      ul {
+        list-style-type: none;
+      }
+      .write {
+        display: flex;
+      }
+      #text {
+        width: 80%;
+      }
+      #add {
+        width: 20%;
+      }
+      .li {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: whitesmoke;
+        padding: 10px;
+        color: black;
+        word-break: break-all;
+        margin-top: 10px;
+      }
+      @media screen and (max-width: 700px) {
+        .container {
+          position: static;
+          width: 100%;
+        }
+        body {
+          flex-direction: column;
+          gap: 30px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="container1">
+      <h1>To do list</h1>
+      <div class="write">
+        <input type="text" id="text" />
+        <input type="button" value="add" id="add" />
+      </div>
+      <ul id="task"></ul>
+    </div>
+    <div class="container" id="container2">
+      <h1>Doing</h1>
+    </div>
+    <div class="container" id="container3">
+      <h1>Done</h1>
+    </div>
+    <script>
+      let write = document.getElementById("text");
+      let Addbtn = document.getElementById("add");
+      let task = document.getElementById("task");
+      let container1 = document.getElementById("container1");
+      let container2 = document.getElementById("container2");
+      let container3 = document.getElementById("container3");
+
+      Addbtn.addEventListener("click", function () {
+        let li = document.createElement("li");
+        li.textContent = write.value;
+        li.classList.add("li");
+        li.draggable = "true";
+
+        if (write.value.trim() != "") {
+          task.appendChild(li);
+        }
+        write.value = "";
+
+        li.addEventListener("dragstart", function (e) {
+          let selected = e.target;
+
+          container2.addEventListener("dragover", function (e) {
+            e.preventDefault();
+          });
+          container2.addEventListener("drop", function (e) {
+            container2.appendChild(selected);
+            selected.style.background = "red";
+            selected = null;
+          });
+
+          container1.addEventListener("dragover", function (e) {
+            e.preventDefault();
+          });
+          container1.addEventListener("drop", function (e) {
+            container1.appendChild(selected);
+            selected = null;
+          });
+
+          container3.addEventListener("dragover", function (e) {
+            e.preventDefault();
+          });
+          container3.addEventListener("drop", function (e) {
+            container3.appendChild(selected);
+            selected.style.background = "green";
+            selected = null;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
